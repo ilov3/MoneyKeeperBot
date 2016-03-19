@@ -58,5 +58,3 @@ def amount_given(message):
             BOT.send_message(user_id, 'Something went wrong...')
     except Exception as e:
         logger.error(e)
-    finally:
-        redis_helpers.flush_transaction_fields(user_id)

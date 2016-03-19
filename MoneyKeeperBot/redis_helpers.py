@@ -13,15 +13,21 @@ def get_api_token(user_id):
 
 
 def store_api_user(user_id):
-    url = API_URL + 'conf/'
-    api_user = requests.get(url, headers={'authorization': 'JWT ' + get_api_token(user_id)}).json().get('username')
-    REDIS.hset(user_id, 'api_user', api_user)
+    try:
+        url = API_URL + 'conf/'
+        api_user = requests.get(url, headers={'authorization': 'JWT ' + get_api_token(user_id)}).json().get('username')
+        REDIS.hset(user_id, 'api_user', api_user)
+    except Exception as e:
+        logger.warn('Failed store api_user for "%s": %s' % (user_id, e))
 
 
 def store_resource(resource, user_id):
-    url = API_URL + resource
-    resources = requests.get(url, headers={'authorization': 'JWT ' + get_api_token(user_id)}).text.encode('utf-8')
-    REDIS.hset(user_id, resource, resources)
+    try:
+        url = API_URL + resource
+        resources = requests.get(url, headers={'authorization': 'JWT ' + get_api_token(user_id)}).text.encode('utf-8')
+        REDIS.hset(user_id, resource, resources)
+    except Exception as e:
+        logger.warn('Failed store resource "%s": %s' % (resource, e))
 
 
 def get_stored_resource(resource, user_id):
