@@ -13,15 +13,13 @@ logger = logging.getLogger(__name__)
 def send_help(message):
     transaction_kinds = ['income', 'expense', 'transfer']
     user_id = message.from_user.id
-    help_msg = (
-        '''
-        /help - shows this help message
-        /start - intro message
-        /update - update your accounts and categories
-        /cancel - cancels transaction preparation
-        %s
-        '''
-    )
+    help_msg = ('''
+/help - shows this help message
+/start - intro message
+/update - update your accounts and categories
+/cancel - cancels transaction preparation
+%s
+        ''')
     BOT.send_message(user_id, help_msg % '\n'.join(['/{0} - post {0} transaction'.format(kind) for kind in transaction_kinds]))
 
 
