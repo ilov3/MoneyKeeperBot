@@ -16,6 +16,7 @@ def send_help(message):
     help_msg = ('''
 /help - shows this help message
 /start - intro message
+/info - shows accounts balances
 /update - update your accounts and categories
 /cancel - cancels transaction preparation
 %s
