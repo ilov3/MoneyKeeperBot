@@ -20,5 +20,6 @@ API_URL = MONEYKEEPER_URL + 'api/'
 REDIS = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 DEFAULT_KEYBOARD = types.ReplyKeyboardMarkup(resize_keyboard=True)
-DEFAULT_KEYBOARD.add(['/income', '/expense', '/transfer'], ['/info', '/update'])
+DEFAULT_KEYBOARD.row('/income', '/expense', '/transfer')
+DEFAULT_KEYBOARD.row('/info', '/update')
 BOT = telebot.TeleBot(TELEGRAM_TOKEN)
