@@ -51,12 +51,12 @@ def amount_given(message):
         amount = message.text
         redis_helpers.store_transaction_amount(amount, user_id)
         code = send_transaction(user_id)
-        logging.warn(code)
+        logger.info(code)
         if code == 201:
             get_info(user_id)
         else:
             BOT.send_message(user_id, 'Something went wrong...')
     except Exception as e:
-        logging.error(e)
+        logger.error(e)
     finally:
         redis_helpers.flush_transaction_fields(user_id)

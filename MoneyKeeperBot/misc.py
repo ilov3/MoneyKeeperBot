@@ -30,7 +30,7 @@ def get_info(user_id):
     accounts = get_stored_resource('account', user_id)
     balances = '\n'.join(['%s: %s' % (acc['name'], acc['get_balance']) for acc in accounts])
     balances += '\nTotal: %s' % sum([acc['get_balance'] for acc in accounts])
-    BOT.send_message(user_id, 'Your info:\n%s' % balances, reply_markup=DEFAULT_KEYBOARD)
+    BOT.send_message(user_id, balances, reply_markup=DEFAULT_KEYBOARD)
 
 
 def cancellable(func):
