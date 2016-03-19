@@ -51,6 +51,7 @@ def income(message):
     token = redis_helpers.get_api_token(user_id)
     try:
         if token:
+            redis_helpers.update_stored_resource('category', user_id)
             categories = redis_helpers.get_stored_resource('category', user_id)
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
             markup.add(*[cat['name'] for cat in categories if cat['kind'] == 'inc'])
@@ -71,6 +72,7 @@ def expense(message):
     token = redis_helpers.get_api_token(user_id)
     try:
         if token:
+            redis_helpers.update_stored_resource('category', user_id)
             categories = redis_helpers.get_stored_resource('category', user_id)
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
             markup.add(*[cat['name'] for cat in categories if cat['kind'] == 'exp'])
@@ -91,6 +93,7 @@ def transfer(message):
     token = redis_helpers.get_api_token(user_id)
     try:
         if token:
+            redis_helpers.update_stored_resource('account', user_id)
             accounts = redis_helpers.get_stored_resource('account', user_id)
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
             markup.add(*[acc['name'] for acc in accounts])
