@@ -1,7 +1,7 @@
 # coding: utf-8
 import logging
 from telebot import types
-from MoneyKeeperBot.misc import get_info
+from MoneyKeeperBot.misc import get_info, login_required
 from MoneyKeeperBot import redis_helpers
 from MoneyKeeperBot.next_message_callbacks import category_chosen, account_to_chosen
 from MoneyKeeperBot.settings import MONEYKEEPER_URL, DEFAULT_KEYBOARD, BOT
@@ -43,6 +43,7 @@ In case of mistrust you can visit the source code on my creators [GitHub](https:
 
 
 @BOT.message_handler(commands=['income'])
+@login_required
 def income(message):
     BOT.register_next_step_handler(message, category_chosen)
     user_id = message.from_user.id
@@ -62,6 +63,7 @@ def income(message):
 
 
 @BOT.message_handler(commands=['expense'])
+@login_required
 def expense(message):
     BOT.register_next_step_handler(message, category_chosen)
     user_id = message.from_user.id
@@ -81,6 +83,7 @@ def expense(message):
 
 
 @BOT.message_handler(commands=['transfer'])
+@login_required
 def transfer(message):
     BOT.register_next_step_handler(message, account_to_chosen)
     user_id = message.from_user.id
@@ -100,6 +103,7 @@ def transfer(message):
 
 
 @BOT.message_handler(commands=['info'])
+@login_required
 def info(message):
     user_id = message.from_user.id
     redis_helpers.update_stored_resource('account', user_id)
