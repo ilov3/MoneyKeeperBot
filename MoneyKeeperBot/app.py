@@ -127,6 +127,7 @@ def cancel(message):
 
 
 @BOT.message_handler(commands=['update'])
+@login_required
 def update(message):
     user_id = message.from_user.id
     redis_helpers.update_stored_resource('account', user_id)
