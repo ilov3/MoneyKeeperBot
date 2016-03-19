@@ -21,5 +21,5 @@ REDIS = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 DEFAULT_KEYBOARD = types.ReplyKeyboardMarkup(resize_keyboard=True)
 DEFAULT_KEYBOARD.row('/income', '/expense', '/transfer')
-DEFAULT_KEYBOARD.row('/info', '/update')
+DEFAULT_KEYBOARD.row('/info', '/update', '/help')
 BOT = telebot.TeleBot(TELEGRAM_TOKEN)
