@@ -56,16 +56,12 @@ def income(message):
     BOT.register_next_step_handler(message, category_chosen)
     user_id = message.from_user.id
     redis_helpers.store_transaction_kind('income', user_id)
-    token = redis_helpers.get_api_token(user_id)
     try:
-        if token:
-            categories = redis_helpers.get_stored_resource('category', user_id)
-            markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-            markup.add(*[cat['name'] for cat in categories if cat['kind'] == 'inc'])
-            markup.add('/cancel')
-            BOT.send_message(user_id, 'Choose category:', reply_markup=markup)
-        else:
-            BOT.send_message(user_id, 'Authenticate first!')
+        categories = redis_helpers.get_stored_resource('category', user_id)
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        markup.add(*[cat['name'] for cat in categories if cat['kind'] == 'inc'])
+        markup.add('/cancel')
+        BOT.send_message(user_id, 'Choose category:', reply_markup=markup)
     except Exception as e:
         logger.warn(e)
 
@@ -76,16 +72,12 @@ def expense(message):
     BOT.register_next_step_handler(message, category_chosen)
     user_id = message.from_user.id
     redis_helpers.store_transaction_kind('expense', user_id)
-    token = redis_helpers.get_api_token(user_id)
     try:
-        if token:
-            categories = redis_helpers.get_stored_resource('category', user_id)
-            markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-            markup.add(*[cat['name'] for cat in categories if cat['kind'] == 'exp'])
-            markup.add('/cancel')
-            BOT.send_message(user_id, 'Choose category:', reply_markup=markup)
-        else:
-            BOT.send_message(user_id, 'Authenticate first!')
+        categories = redis_helpers.get_stored_resource('category', user_id)
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        markup.add(*[cat['name'] for cat in categories if cat['kind'] == 'exp'])
+        markup.add('/cancel')
+        BOT.send_message(user_id, 'Choose category:', reply_markup=markup)
     except Exception as e:
         logger.warn(e)
 
@@ -96,16 +88,12 @@ def transfer(message):
     BOT.register_next_step_handler(message, account_to_chosen)
     user_id = message.from_user.id
     redis_helpers.store_transaction_kind('transfer', user_id)
-    token = redis_helpers.get_api_token(user_id)
     try:
-        if token:
-            accounts = redis_helpers.get_stored_resource('account', user_id)
-            markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-            markup.add(*[acc['name'] for acc in accounts])
-            markup.add('/cancel')
-            BOT.send_message(user_id, 'Choose account transfer to:', reply_markup=markup)
-        else:
-            BOT.send_message(user_id, 'Authenticate first!')
+        accounts = redis_helpers.get_stored_resource('account', user_id)
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        markup.add(*[acc['name'] for acc in accounts])
+        markup.add('/cancel')
+        BOT.send_message(user_id, 'Choose account transfer to:', reply_markup=markup)
     except Exception as e:
         logger.warn(e)
 
