@@ -47,6 +47,7 @@ def login_required(func):
         user_id = message.from_user.id
         if get_api_token(user_id):
             func(message)
-        BOT.send_message(user_id, 'Authenticate first, through /start command.')
+        else:
+            BOT.send_message(user_id, 'Authenticate first, through /start command.')
 
     return wrapper
