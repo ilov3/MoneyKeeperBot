@@ -15,7 +15,6 @@ def category_chosen(message):
     category = message.text
     user_id = message.from_user.id
     redis_helpers.store_transaction_to(category, user_id)
-    redis_helpers.update_stored_resource('account', user_id)
     accounts = redis_helpers.get_stored_resource('account', user_id)
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
     markup.add(*[acc['name'] for acc in accounts])

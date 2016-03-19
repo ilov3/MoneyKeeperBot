@@ -11,9 +11,18 @@ logger = logging.getLogger(__name__)
 
 @BOT.message_handler(commands=['help'])
 def send_help(message):
-    CMD = ['income', 'expense', 'transfer']
+    transaction_kinds = ['income', 'expense', 'transfer']
     user_id = message.from_user.id
-    BOT.send_message(user_id, '\n'.join(['/{0} - post {0} transaction'.format(kind) for kind in CMD]))
+    help_msg = (
+        '''
+        /help - shows this help message
+        /start - intro message
+        /update - update your accounts and categories
+        /cancel - cancels transaction preparation
+        %s
+        '''
+    )
+    BOT.send_message(user_id, help_msg % '\n'.join(['/{0} - post {0} transaction'.format(kind) for kind in transaction_kinds]))
 
 
 @BOT.message_handler(commands=['start'])
@@ -51,7 +60,6 @@ def income(message):
     token = redis_helpers.get_api_token(user_id)
     try:
         if token:
-            redis_helpers.update_stored_resource('category', user_id)
             categories = redis_helpers.get_stored_resource('category', user_id)
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
             markup.add(*[cat['name'] for cat in categories if cat['kind'] == 'inc'])
@@ -72,7 +80,6 @@ def expense(message):
     token = redis_helpers.get_api_token(user_id)
     try:
         if token:
-            redis_helpers.update_stored_resource('category', user_id)
             categories = redis_helpers.get_stored_resource('category', user_id)
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
             markup.add(*[cat['name'] for cat in categories if cat['kind'] == 'exp'])
@@ -93,7 +100,6 @@ def transfer(message):
     token = redis_helpers.get_api_token(user_id)
     try:
         if token:
-            redis_helpers.update_stored_resource('account', user_id)
             accounts = redis_helpers.get_stored_resource('account', user_id)
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
             markup.add(*[acc['name'] for acc in accounts])
@@ -118,6 +124,14 @@ def cancel(message):
     user_id = message.from_user.id
     redis_helpers.flush_transaction_fields(user_id)
     BOT.send_message(user_id, 'Transaction cancelled!', reply_markup=DEFAULT_KEYBOARD)
+
+
+@BOT.message_handler(commands=['update'])
+def update(message):
+    user_id = message.from_user.id
+    redis_helpers.update_stored_resource('account', user_id)
+    redis_helpers.update_stored_resource('category', user_id)
+    BOT.send_message(user_id, 'Data updated!', reply_markup=DEFAULT_KEYBOARD)
 
 
 BOT.polling(none_stop=True, interval=0, timeout=3)
