@@ -36,12 +36,12 @@ def send_welcome(message):
         else:
             welcome_msg = ('''
 Hi, %(username)s!\n\nI\'m simple helper bot for [MoneyKeeper](%(url)s).
-My responsibilities is: send your transactions to [MoneyKeeper](%(url)s) and show info from your accounts.
+My responsibilities are: send your transactions to [MoneyKeeper](%(url)s) and show info from your accounts.
 To proceed you will need authenticate [here](%(auth_url)s)
 In case of mistrust you can visit the source code on my creators [GitHub](https://github.com/ilov3).
             ''')
             kwargs = {
-                'username': message.from_user.username,
+                'username': message.from_user.username or 'stranger',
                 'url': MONEYKEEPER_URL,
                 'auth_url': MONEYKEEPER_URL + 'auth/%s' % user_id
             }
