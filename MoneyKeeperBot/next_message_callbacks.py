@@ -17,7 +17,7 @@ def category_chosen(message):
     redis_helpers.store_transaction_to(category, user_id)
     accounts = redis_helpers.get_stored_resource('account', user_id)
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-    markup.add(*[acc['name'] for acc in accounts])
+    markup.add(*[acc['name'].encode('utf-8') for acc in accounts])
     markup.add('/cancel')
     BOT.send_message(user_id, 'Choose account:', reply_markup=markup)
 
@@ -30,7 +30,7 @@ def account_to_chosen(message):
     redis_helpers.store_transaction_to(account_to, user_id)
     accounts = redis_helpers.get_stored_resource('account', user_id)
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-    markup.add(*[acc['name'] for acc in accounts])
+    markup.add(*[acc['name'].encode('utf-8') for acc in accounts])
     markup.add('/cancel')
     BOT.send_message(user_id, 'Choose account:', reply_markup=markup)
 

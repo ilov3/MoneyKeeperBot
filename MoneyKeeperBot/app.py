@@ -7,6 +7,7 @@ from MoneyKeeperBot.next_message_callbacks import category_chosen, account_to_ch
 from MoneyKeeperBot.settings import MONEYKEEPER_URL, DEFAULT_KEYBOARD, BOT
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(format='%(asctime)s::%(name)s::%(levelname)s::%(lineno)s: %(message)s')
 
 
 @BOT.message_handler(commands=['help'])
@@ -59,7 +60,7 @@ def income(message):
     try:
         categories = redis_helpers.get_stored_resource('category', user_id)
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-        markup.add(*[cat['name'] for cat in categories if cat['kind'] == 'inc'])
+        markup.add(*[cat['name'].encode('utf-8') for cat in categories if cat['kind'] == 'inc'])
         markup.add('/cancel')
         BOT.send_message(user_id, 'Choose category:', reply_markup=markup)
     except Exception as e:
@@ -75,7 +76,7 @@ def expense(message):
     try:
         categories = redis_helpers.get_stored_resource('category', user_id)
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-        markup.add(*[cat['name'] for cat in categories if cat['kind'] == 'exp'])
+        markup.add(*[cat['name'].encode('utf-8') for cat in categories if cat['kind'] == 'exp'])
         markup.add('/cancel')
         BOT.send_message(user_id, 'Choose category:', reply_markup=markup)
     except Exception as e:
@@ -91,7 +92,7 @@ def transfer(message):
     try:
         accounts = redis_helpers.get_stored_resource('account', user_id)
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-        markup.add(*[acc['name'] for acc in accounts])
+        markup.add(*[acc['name'].encode('utf-8') for acc in accounts])
         markup.add('/cancel')
         BOT.send_message(user_id, 'Choose account transfer to:', reply_markup=markup)
     except Exception as e:
